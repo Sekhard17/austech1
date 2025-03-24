@@ -1,11 +1,380 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import Partners from '../components/Partners.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+
+// Definimos los enlaces para el footer
+const navLinks = [
+  { href: '/', text: 'Home' },
+  { href: '/empresa', text: 'Empresa' },
+  { href: '/partners', text: 'Partners y representaciones' },
+  { href: '/presentacion', text: 'Presentación Corporativa' },
+  { href: '/productos', text: 'Productos' },
+  { href: '/servicios', text: 'Servicios' },
+  { href: 'https://tienda.austech.cl', text: 'Tienda online', external: true },
+  { href: '/contacto', text: 'Contacto' },
+];
+
+// Definimos productos/categorías con las rutas correctas
+const productos = [
+  { nombre: 'Fresas Calzadas HW', imagen: '/productos/fresa-calzada-235x235.jpg' },
+  { nombre: 'Cabezales portacuchillos', imagen: '/productos/cabezal-porta-cuchillo-235x235.jpg' },
+  { nombre: 'Fresas Integrales HM', imagen: '/productos/fresa-235x235.jpg' },
+  { nombre: 'Fresas de diamante', imagen: '/productos/diamante-235x235.jpg' },
+  { nombre: 'Cabezales para moldurar', imagen: '/productos/moldurar-235x235.jpg' },
+  { nombre: 'Brocas y fresas para router y CNC', imagen: '/productos/brocas-235x235.jpg' },
+  { nombre: 'Herramientas para ventanas de PVC', imagen: '/productos/plantilla-235x235.jpg' },
+  { nombre: 'Sierras', imagen: '/productos/sierra-xs-1-235x235.jpg' },
+  { nombre: 'Cuchillos', imagen: '/productos/cuchillos-1-235x235.jpg' },
+];
+
+const currentPath = Astro.url.pathname;
 ---
 
-<Layout>
-	<Welcome />
+<Layout 
+  title="Austech | Austral Technology" 
+  description="Experiencia e innovación en la fabricación de herramientas"
+>
+  <Navbar activeItem={currentPath} />
+  
+  <main>
+    <!-- Hero Section con Carrusel -->
+    <div class="relative min-h-screen">
+      <!-- Carrusel -->
+      <div class="carousel relative min-h-screen">
+        <!-- Primera diapositiva - Slogan -->
+        <div class="carousel-item absolute inset-0 opacity-100 transition-opacity duration-700">
+          <div class="absolute inset-0 bg-gradient-to-r from-black to-black/90">
+            <div class="absolute inset-0">
+              <img 
+                src="/images/hero/hero-1.jpg" 
+                alt="Fondo Austech" 
+                class="w-full h-full object-cover opacity-40"
+              />
+            </div>
+            <div class="relative h-full flex items-center justify-center px-4 sm:px-6">
+              <div class="text-center space-y-4 sm:space-y-8 max-w-5xl mx-auto animate-fade-in">
+                <h1 class="text-3xl sm:text-5xl md:text-7xl font-bold text-white leading-tight tracking-tight">
+                  LIBERA TU<br class="sm:hidden"/> POTENCIAL,<br/>
+                  <span class="text-primary">TRABAJA CON CALIDAD</span>
+                </h1>
+                <p class="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto px-4">
+                  Herramientas de precisión que transforman tus ideas en realidad
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-4">
+                  <a 
+                    href="/productos" 
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 sm:px-8 py-3 rounded-full font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
+                  >
+                    Explorar Productos
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </a>
+                  <a 
+                    href="/contacto" 
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 sm:px-8 py-3 rounded-full font-medium backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                  >
+                    Contáctanos
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Segunda diapositiva - Tecnología -->
+        <div class="carousel-item absolute inset-0 opacity-0 transition-opacity duration-700">
+          <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-black/80">
+            <div class="absolute inset-0">
+              <img 
+                src="/images/hero/hero-2.jpg" 
+                alt="Tecnología Austech" 
+                class="w-full h-full object-cover opacity-50"
+              />
+            </div>
+            <div class="relative h-full flex items-center">
+              <div class="container mx-auto px-4">
+                <div class="max-w-3xl space-y-6">
+                  <h2 class="text-4xl md:text-6xl font-bold text-white leading-tight">
+                    TECNOLOGÍA DE<br/>
+                    <span class="text-primary">ÚLTIMA GENERACIÓN</span>
+                  </h2>
+                  <p class="text-xl text-gray-300 max-w-2xl">
+                    Contamos con la mejor tecnología para la fabricación y el servicio de herramientas. 
+                    Máquinas de última generación para resultados excepcionales.
+                  </p>
+                  <div class="flex items-center gap-6 pt-4">
+                    <a 
+                      href="/servicios" 
+                      class="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-3 rounded-full font-medium transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+                    >
+                      Conoce Nuestros Servicios
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tercera diapositiva - Partners -->
+        <div class="carousel-item absolute inset-0 opacity-0 transition-opacity duration-700">
+          <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-black/80">
+            <div class="absolute inset-0">
+              <img 
+                src="/images/hero/hero-3.jpg" 
+                alt="Partners Austech" 
+                class="w-full h-full object-cover opacity-50"
+              />
+            </div>
+            <div class="relative h-full flex items-center justify-end">
+              <div class="container mx-auto px-4">
+                <div class="max-w-3xl ml-auto space-y-6 text-right">
+                  <h2 class="text-4xl md:text-6xl font-bold text-white leading-tight">
+                    ALIANZAS<br/>
+                    <span class="text-primary">ESTRATÉGICAS</span>
+                  </h2>
+                  <p class="text-xl text-gray-300 max-w-2xl ml-auto">
+                    Trabajamos con los mejores fabricantes a nivel mundial para garantizar 
+                    la más alta calidad en cada producto.
+                  </p>
+                  <div class="flex items-center justify-end gap-6 pt-4">
+                    <a 
+                      href="/partners" 
+                      class="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 text-white px-8 py-3 rounded-full font-medium transform hover:scale-105 transition-all duration-300"
+                    >
+                      Conoce a Nuestros Partners
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles del carrusel -->
+      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 sm:gap-4 z-10">
+        <button class="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-primary transition-all duration-300" data-slide="0"></button>
+        <button class="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="1"></button>
+        <button class="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300" data-slide="2"></button>
+      </div>
+
+      <!-- Flechas de navegación -->
+      <button class="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition-all duration-300 backdrop-blur-sm z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button class="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition-all duration-300 backdrop-blur-sm z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Categorías de Productos -->
+    <section class="bg-gray-50">
+      <ProductGrid productos={productos} />
+    </section>
+
+    <!-- Servicios -->
+    <ServicesGrid />
+    
+    <Partners />
+  </main>
+  
+  <!-- Footer -->
+  <footer class="bg-[#111827] text-white border-t border-gray-800 py-8 sm:py-12">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 sm:mb-12">
+        <!-- Columna 1: Logo y Contacto -->
+        <div class="lg:col-span-1">
+          <h3 class="text-lg sm:text-xl font-bold text-white mb-4">Austral Technology</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <span class="text-sm text-gray-300">Capricornio 9951, El Bosque, Región Metropolitana, Chile.</span>
+            </li>
+            <li>
+              <a href="tel:+56226711755" class="block text-gray-300 hover:text-primary">2 2671 1755</a>
+            </li>
+            <li>
+              <a href="tel:+56942254666" class="block text-gray-300 hover:text-primary">+56 9 4225 4666</a>
+            </li>
+            <li>
+              <a href="mailto:ventas@austech.cl" class="text-primary hover:text-primary/80">ventas@austech.cl</a>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Columna 2: Enlaces -->
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold text-white mb-4">Menú</h3>
+            <ul class="space-y-2">
+              {
+                navLinks.slice(0, 4).map((link) => (
+                  <li>
+                    <a href={link.href} class="text-gray-300 hover:text-primary text-sm sm:text-base">
+                      {link.text}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold text-white mb-4 opacity-0">Menú</h3>
+            <ul class="space-y-2">
+              {
+                navLinks.slice(4).map((link) => (
+                  <li>
+                    <a 
+                      href={link.href} 
+                      class="text-gray-300 hover:text-primary text-sm sm:text-base"
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Columna 3: Certificaciones y Pagos -->
+        <div class="lg:col-span-1">
+          <div class="grid grid-cols-2 gap-4 sm:gap-8">
+            <!-- Certificaciones -->
+            <div>
+              <div class="flex items-center justify-center">
+                <div class="bg-white/10 p-3 sm:p-4 rounded-lg hover:bg-white/20 transition-colors duration-300">
+                  <img 
+                    src="/certifications/iso9001.png" 
+                    alt="Certificación ISO 9001:2015" 
+                    class="h-16 sm:h-20 w-auto"
+                    title="Empresa certificada en norma ISO 9001:2015"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Métodos de Pago -->
+            <div>
+              <div class="flex items-center justify-center">
+                <div class="bg-white/10 p-3 sm:p-4 rounded-lg hover:bg-white/20 transition-colors duration-300">
+                  <img 
+                    src="/certifications/webpay.svg" 
+                    alt="WebPay" 
+                    class="h-10 sm:h-12 w-auto"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Línea divisoria con gradiente -->
+      <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-6 sm:my-8"></div>
+      
+      <!-- Copyright y certificaciones -->
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-gray-400">
+        <p>Copyright © {new Date().getFullYear()}. Todos los derechos reservados.</p>
+        <div class="flex items-center gap-2">
+          <span class="text-primary font-medium">Empresa Certificada</span>
+          <span class="text-gray-300">ISO 9001:2015</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 </Layout>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 1s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Definición de tipos
+  type HTMLElementWithStyle = HTMLElement & {
+    style: CSSStyleDeclaration;
+  };
+
+  // Carrusel functionality
+  let currentSlide = 0;
+  const slides = document.querySelectorAll<HTMLElementWithStyle>('.carousel-item');
+  const indicators = document.querySelectorAll<HTMLButtonElement>('[data-slide]');
+  const totalSlides = slides.length;
+
+  function showSlide(index: number): void {
+    slides.forEach((slide, i) => {
+      if (slide && slide.style) {
+        slide.style.opacity = i === index ? '1' : '0';
+      }
+    });
+
+    indicators.forEach((indicator, i) => {
+      if (indicator) {
+        indicator.className = i === index 
+          ? 'w-3 h-3 rounded-full bg-primary transition-all duration-300'
+          : 'w-3 h-3 rounded-full bg-white/30 hover:bg-white/50 transition-all duration-300';
+      }
+    });
+  }
+
+  // Auto advance slides
+  const autoAdvance = setInterval(() => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  }, 5000);
+
+  // Click handlers for indicators
+  indicators.forEach((indicator, index) => {
+    indicator?.addEventListener('click', () => {
+      currentSlide = index;
+      showSlide(currentSlide);
+    });
+  });
+
+  // Click handlers for arrows
+  const prevButton = document.querySelector<HTMLButtonElement>('button:has(svg path[d*="M15 19"])');
+  const nextButton = document.querySelector<HTMLButtonElement>('button:has(svg path[d*="M9 5"])');
+
+  prevButton?.addEventListener('click', () => {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+  });
+
+  nextButton?.addEventListener('click', () => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+  });
+
+  // Cleanup on page unload
+  document.addEventListener('unload', () => {
+    clearInterval(autoAdvance);
+  });
+</script>

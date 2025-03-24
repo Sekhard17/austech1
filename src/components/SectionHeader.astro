@@ -1,0 +1,104 @@
+---
+interface Props {
+  subtitle: string;
+  title: string;
+  highlightedText: string;
+  showButtons?: boolean;
+  variant?: 'products' | 'services';
+}
+
+const { 
+  subtitle, 
+  title, 
+  highlightedText, 
+  showButtons = true,
+  variant = 'services'
+} = Astro.props;
+
+const buttons = {
+  products: [
+    {
+      href: 'https://tienda.austech.cl',
+      text: 'Comprar Online',
+      primary: true
+    },
+    {
+      href: '/contacto',
+      text: 'Contactar Asesor',
+      primary: false
+    }
+  ],
+  services: [
+    {
+      href: '/cotizar',
+      text: 'Solicitar Cotización',
+      primary: true
+    },
+    {
+      href: '/contacto',
+      text: 'Contactar',
+      primary: false
+    }
+  ]
+};
+
+const currentButtons = buttons[variant];
+---
+
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 fade-in">
+  <div class="mb-6 md:mb-0">
+    <span class="text-[#FF7800] font-medium text-sm tracking-wider uppercase block mb-3">{subtitle}</span>
+    <h2 class="text-3xl md:text-4xl font-bold leading-tight max-w-2xl">
+      <span class="text-[#FF7800]">{title}</span> 
+      <span class={variant === 'services' ? 'text-white' : 'text-gray-900'}>{highlightedText}</span>
+    </h2>
+  </div>
+
+  {showButtons && (
+    <div class="flex gap-3 md:gap-4">
+      {currentButtons.map(button => (
+        <a 
+          href={button.href} 
+          class={`
+            group relative px-6 py-3 rounded-lg inline-flex items-center
+            ${button.primary ? 'bg-[#FF7800]' : 'border-2 border-[#FF7800]/20 text-[#FF7800]'}
+            overflow-hidden
+          `}
+          target={button.href.startsWith('http') ? '_blank' : undefined}
+          rel={button.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+        >
+          <span class={`
+            relative z-10 font-medium text-sm
+            ${button.primary ? 'text-white' : 'text-[#FF7800] group-hover:text-white'}
+            transition-colors duration-300
+          `}>
+            {button.text}
+          </span>
+          <span class={`
+            absolute inset-0 transform scale-x-0 group-hover:scale-x-100
+            transition-transform duration-300 origin-left
+            ${button.primary ? 'bg-gradient-to-r from-[#FF7800] to-[#ff9500]' : 'bg-[#FF7800]'}
+          `}></span>
+        </a>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .fade-in {
+    opacity: 0;
+  }
+</style>
+
+<script>
+  import { inView, animate } from "@motionone/dom";
+
+  inView(".fade-in", ({ target }) => {
+    animate(
+      target,
+      { opacity: [0, 1], y: [20, 0] },
+      { duration: 0.8, delay: 0.2 }
+    );
+  });
+</script> 

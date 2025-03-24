@@ -1,0 +1,219 @@
+---
+// Definimos los enlaces de navegación
+const navLinks = [
+  { href: '/productos', text: 'PRODUCTOS' },
+  { href: '/servicios', text: 'SERVICIOS' },
+  { href: '/contacto', text: 'CONTACTO' },
+];
+
+const { activeItem = '/' } = Astro.props;
+---
+
+<header class="w-full fixed top-0 z-50">
+  <!-- Navbar principal - Fondo negro con blur -->
+  <div class="bg-[#212121]/95 backdrop-blur-sm py-3 sm:py-4 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="logo-container">
+          <img src="/images/logo.png" alt="Austech" class="h-8 sm:h-10 w-auto transition-all duration-300 logo-image" />
+        </a>
+
+        <!-- Navegación y botón -->
+        <div class="hidden md:flex items-center gap-8">
+          <!-- Menú principal -->
+          <nav>
+            <ul class="flex items-center gap-8">
+              {
+                navLinks.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class={`text-sm font-medium transition-all duration-200 hover:text-primary relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full ${
+                        activeItem === link.href 
+                          ? 'text-primary after:w-full' 
+                          : 'text-white'
+                      }`}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+
+          <!-- Botón Compra Online -->
+          <a 
+            href="https://tienda.austech.cl" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white px-6 py-2.5 rounded-full font-medium text-sm transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
+          >
+            COMPRA ONLINE
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Botón menú móvil -->
+        <button 
+          class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+          id="mobile-menu-button"
+          aria-label="Menú principal"
+        >
+          <svg 
+            class="h-6 w-6" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path 
+              class="open-icon" 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              stroke-width="2" 
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+            <path 
+              class="close-icon hidden" 
+              stroke-linecap="round" 
+              stroke-linejoin="round" 
+              stroke-width="2" 
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú móvil -->
+  <div 
+    class="md:hidden fixed inset-x-0 top-[60px] bg-[#212121]/95 backdrop-blur-sm transform translate-x-full transition-transform duration-300 ease-in-out"
+    id="mobile-menu"
+  >
+    <div class="container mx-auto px-4 py-4">
+      <nav class="flex flex-col space-y-4">
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class={`text-sm font-medium p-2 rounded-lg transition-colors ${
+                activeItem === link.href 
+                  ? 'text-primary bg-white/5' 
+                  : 'text-white hover:bg-white/5'
+              }`}
+            >
+              {link.text}
+            </a>
+          ))
+        }
+        <a 
+          href="https://tienda.austech.cl" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white p-2 rounded-lg font-medium text-sm"
+        >
+          COMPRA ONLINE
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  .logo-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo-image {
+    filter: brightness(1);
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+
+  .logo-container:hover .logo-image {
+    filter: brightness(1.2);
+    transform: scale(1.02);
+  }
+
+  /* Efecto de brillo */
+  .logo-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 120, 0, 0.1),
+      transparent
+    );
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .logo-container:hover::after {
+    opacity: 1;
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+      transform: translateX(100%) rotate(45deg);
+    }
+  }
+
+  /* Animación del menú móvil */
+  #mobile-menu.active {
+    transform: translateX(0);
+  }
+</style>
+
+<script>
+  // Manejo del menú móvil
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const openIcon = mobileMenuButton?.querySelector('.open-icon');
+  const closeIcon = mobileMenuButton?.querySelector('.close-icon');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('active');
+    openIcon?.classList.toggle('hidden');
+    closeIcon?.classList.toggle('hidden');
+  });
+
+  // Cerrar menú al hacer click en un enlace
+  const mobileLinks = mobileMenu?.querySelectorAll('a');
+  mobileLinks?.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.remove('active');
+      openIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+    });
+  });
+
+  // Cerrar menú al hacer scroll
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    if (currentScroll > lastScroll && currentScroll > 100) {
+      mobileMenu?.classList.remove('active');
+      openIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+    }
+    lastScroll = currentScroll;
+  });
+</script> 

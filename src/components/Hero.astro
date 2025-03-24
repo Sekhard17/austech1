@@ -1,0 +1,145 @@
+---
+
+interface Slide {
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  cta: {
+    text: string;
+    href: string;
+  };
+}
+
+const slides: Slide[] = [
+  {
+    title: 'Experiencia e innovación',
+    subtitle: 'en la fabricación de herramientas.',
+    description: 'Más de 20 años de experiencia en el mercado.',
+    image: '/images/hero/hero-1.jpg',
+    cta: { text: 'Conoce más', href: '/empresa' }
+  },
+  {
+    title: 'Visita nuestra tienda',
+    subtitle: 'Descubre nuestra amplia gama de productos',
+    description: 'Herramientas de alta calidad para profesionales.',
+    image: '/images/hero/hero-2.jpg',
+    cta: { text: 'Ir a la tienda', href: 'https://tienda.austech.cl' }
+  }
+];
+---
+
+<!-- Importar los estilos de Swiper -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- Contenedor principal de Swiper -->
+<div class="swiper hero-swiper">
+  <!-- Contenedor de slides -->
+  <div class="swiper-wrapper">
+    {
+      slides.map((slide) => (
+        <div class="swiper-slide">
+          <div class="relative h-[600px]">
+            {/* Overlay gradient */}
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 z-10"></div>
+            
+            {/* Background image */}
+            <img
+              src={slide.image}
+              alt={slide.title}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+            
+            {/* Content */}
+            <div class="relative z-20 container mx-auto h-full flex items-center">
+              <div class="max-w-2xl text-white px-4">
+                <h2 class="text-5xl font-bold mb-4">
+                  {slide.title}
+                </h2>
+                <p class="text-2xl mb-3 text-gray-200">
+                  {slide.subtitle}
+                </p>
+                <p class="text-lg mb-8 text-gray-300">
+                  {slide.description}
+                </p>
+                <a
+                  href={slide.cta.href}
+                  class="inline-block bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-md transition-colors duration-300"
+                >
+                  {slide.cta.text}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  
+  <!-- Botones de navegación -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+
+<style>
+  /* Personalización de los botones de navegación */
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: white;
+    opacity: 0.75;
+    transition: opacity 0.3s;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    opacity: 1;
+  }
+
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    font-size: 1.5rem;
+  }
+</style>
+
+<script>
+  // Declaración para TypeScript
+  declare const Swiper: any;
+  
+  // Inicializar el carrusel cuando el DOM esté listo
+  const initSwiper = () => {
+    try {
+      const swiper = new Swiper('.hero-swiper', {
+        // Opciones de navegación
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        
+        // Opciones generales
+        loop: true,
+        
+        // Autoplay
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+      });
+    } catch (error) {
+      console.error('Error al inicializar Swiper:', error);
+    }
+  };
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSwiper);
+  } else {
+    initSwiper();
+  }
+</script>
+
+<!-- Importar Swiper desde CDN -->
+<script is:inline src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> 

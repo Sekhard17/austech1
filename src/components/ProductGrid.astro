@@ -1,0 +1,104 @@
+---
+import { animate, inView } from '@motionone/dom';
+import SectionHeader from "./SectionHeader.astro";
+
+interface Producto {
+  nombre: string;
+  imagen: string;
+}
+
+const { productos } = Astro.props;
+
+// Validación de tipo para productos
+const typedProductos = productos as Producto[];
+---
+
+<div class="container mx-auto px-4 py-12 sm:py-16 bg-gray-50">
+  <SectionHeader
+    subtitle="Catálogo de Productos"
+    title="Descubre"
+    highlightedText="nuestras herramientas de precisión"
+    variant="products"
+  />
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+    {
+      typedProductos.map((producto: Producto, index: number) => (
+        <div 
+          class="product-card"
+          data-index={index}
+        >
+          <a 
+            href={`/productos/${producto.nombre.toLowerCase().replace(/ /g, '-')}`} 
+            class="block group"
+          >
+            {/* Card container */}
+            <div class="relative bg-white rounded-lg p-3 transition-all duration-300 
+                      hover:shadow-lg transform hover:-translate-y-1">
+              
+              {/* Contenedor de imagen con efecto */}
+              <div class="relative aspect-square overflow-hidden flex items-center justify-center">
+                <img 
+                  src={producto.imagen} 
+                  alt={producto.nombre}
+                  class="w-full h-full object-contain transform transition-transform duration-300
+                         group-hover:scale-105"
+                  loading="lazy"
+                  onerror="this.src='/images/placeholder.jpg'"
+                />
+              </div>
+              
+              {/* Texto con efecto */}
+              <div class="mt-2 relative overflow-hidden">
+                <h3 class="text-xs sm:text-sm font-medium text-center text-gray-800 transition-colors duration-300
+                           group-hover:text-[#FF7800] leading-tight">
+                  {producto.nombre}
+                </h3>
+              </div>
+            </div>
+          </a>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* Efecto de hover suave para las cards */
+  .product-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Efecto de hover para el texto */
+  .product-card:hover h3 {
+    color: #FF7800;
+  }
+
+  @media (max-width: 640px) {
+    .product-card:active {
+      transform: scale(0.98);
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView } from '@motionone/dom';
+
+  // Animación de entrada para las tarjetas
+  inView('.product-card', ({ target }) => {
+    // Aseguramos que target es un HTMLElement
+    const element = target as HTMLElement;
+    const delay = parseInt(element.dataset.index || '0') * 0.1;
+    
+    animate(target, {
+      opacity: [0, 1],
+      transform: ['translateY(20px)', 'translateY(0)']
+    }, {
+      delay,
+      duration: 0.6,
+      easing: [.22, .03, .26, 1]
+    });
+  });
+</script> 

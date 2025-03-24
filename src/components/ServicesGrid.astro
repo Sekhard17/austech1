@@ -1,0 +1,165 @@
+---
+import { inView } from "@motionone/dom";
+import SectionHeader from "./SectionHeader.astro";
+
+interface Service {
+  title: string;
+  image: string;
+  description: string;
+  icon?: string;
+}
+
+const services: Service[] = [
+  {
+    title: 'Afilado de sierras',
+    image: '/servicios/1.jpg',
+    description: 'Servicio profesional de afilado para mantener sus sierras en óptimas condiciones.',
+    icon: '🔄'
+  },
+  {
+    title: 'Balanceo de herramientas',
+    image: '/servicios/2.jpg',
+    description: 'Precisión y equilibrio perfecto para un rendimiento óptimo de sus herramientas.',
+    icon: '⚖️'
+  },
+  {
+    title: 'Proyectos a Medida',
+    image: '/servicios/3.jpg',
+    description: 'Soluciones personalizadas adaptadas a las necesidades específicas de su proyecto.',
+    icon: '📐'
+  },
+  {
+    title: 'Partes y piezas',
+    image: '/servicios/4.jpg',
+    description: 'Amplia gama de componentes de alta calidad para sus equipos.',
+    icon: '⚙️'
+  },
+  {
+    title: 'Reparación de cabezales',
+    image: '/servicios/5.jpg',
+    description: 'Servicio especializado en la reparación y mantenimiento de cabezales.',
+    icon: '🔧'
+  },
+  {
+    title: 'Tecnología de diamante afilado (PCD)',
+    image: '/servicios/6.jpg',
+    description: 'Tecnología avanzada para el afilado de precisión con diamante.',
+    icon: '💎'
+  },
+  {
+    title: 'Asesoría Técnica Especializada',
+    image: '/servicios/7.jpg',
+    description: 'Consultoría experta para optimizar sus procesos y selección de herramientas.',
+    icon: '🎯'
+  }
+];
+---
+
+<section class="py-16 bg-gradient-to-b from-[#212121] via-[#1a1a1a] to-black relative overflow-hidden">
+  <div class="container mx-auto px-4 relative">
+    <SectionHeader
+      subtitle="Nuestros Servicios"
+      title="Soluciones profesionales"
+      highlightedText="para tu negocio"
+      variant="services"
+    />
+
+    <!-- Carrusel de servicios -->
+    <div class="relative">
+      <!-- Contenedor del scroll horizontal -->
+      <div class="overflow-x-auto hide-scrollbar">
+        <div class="flex gap-6 pb-6 min-w-max">
+          {services.map((service, index) => (
+            <div 
+              class="service-card w-[300px] bg-[#2A2A2A] rounded-xl overflow-hidden hover:bg-[#333333] transition-all duration-300 opacity-0 group"
+              style={{
+                '--delay': `${index * 0.1}s`
+              } as any}
+            >
+              <div class="h-40 relative overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-semibold text-white group-hover:text-[#FF7800] transition-colors duration-300">
+                  {service.title}
+                </h3>
+                <p class="text-gray-400 text-sm mt-2 line-clamp-2">
+                  {service.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Indicador de scroll -->
+      <div class="absolute bottom-0 left-0 w-full h-1 bg-white/5">
+        <div class="scroll-indicator h-full bg-primary/30 transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Ocultar scrollbar pero mantener funcionalidad */
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Estado inicial para las animaciones */
+  .fade-in {
+    opacity: 0;
+  }
+
+  /* Efecto de hover suave */
+  .service-card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .service-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(255, 120, 0, 0.15);
+  }
+</style>
+
+<script>
+  import { inView, animate } from "@motionone/dom";
+
+  // Animación para el título
+  inView(".fade-in", ({ target }) => {
+    animate(
+      target,
+      { opacity: [0, 1], y: [20, 0] },
+      { duration: 0.8, delay: 0.2 }
+    );
+  });
+
+  // Animación para las tarjetas de servicios
+  inView(".service-card", ({ target }) => {
+    const delay = parseFloat((target as HTMLElement).style.getPropertyValue("--delay")) || 0;
+    animate(
+      target,
+      { opacity: [0, 1], x: [20, 0] },
+      { duration: 0.8, delay, easing: [.22, .03, .26, 1] }
+    );
+  });
+
+  // Actualizar indicador de scroll
+  const scrollContainer = document.querySelector('.hide-scrollbar');
+  const scrollIndicator = document.querySelector('.scroll-indicator');
+
+  if (scrollContainer && scrollIndicator) {
+    scrollContainer.addEventListener('scroll', () => {
+      const scrollPercentage = (scrollContainer.scrollLeft / (scrollContainer.scrollWidth - scrollContainer.clientWidth)) * 100;
+      (scrollIndicator as HTMLElement).style.width = `${scrollPercentage}%`;
+    });
+  }
+</script> 
