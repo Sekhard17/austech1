@@ -1,5 +1,4 @@
 ---
-import { animate, inView } from '@motionone/dom';
 import SectionHeader from "./SectionHeader.astro";
 
 interface Producto {
@@ -21,7 +20,7 @@ const typedProductos = productos as Producto[];
     variant="products"
   />
 
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+  <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2 sm:gap-3">
     {
       typedProductos.map((producto: Producto, index: number) => (
         <div 
@@ -33,7 +32,7 @@ const typedProductos = productos as Producto[];
             class="block group"
           >
             {/* Card container */}
-            <div class="relative bg-white rounded-lg p-3 transition-all duration-300 
+            <div class="relative bg-white rounded-lg transition-all duration-300 p-1.5
                       hover:shadow-lg transform hover:-translate-y-1">
               
               {/* Contenedor de imagen con efecto */}
@@ -47,14 +46,14 @@ const typedProductos = productos as Producto[];
                   onerror="this.src='/images/placeholder.jpg'"
                 />
               </div>
-              
-              {/* Texto con efecto */}
-              <div class="mt-2 relative overflow-hidden">
-                <h3 class="text-xs sm:text-sm font-medium text-center text-gray-800 transition-colors duration-300
-                           group-hover:text-[#FF7800] leading-tight">
-                  {producto.nombre}
-                </h3>
-              </div>
+            </div>
+            
+            {/* Texto con efecto */}
+            <div class="mt-2">
+              <h3 class="text-[12px] font-medium text-center text-gray-800 transition-colors duration-300
+                         group-hover:text-[#FF7800] leading-tight">
+                {producto.nombre}
+              </h3>
             </div>
           </a>
         </div>
